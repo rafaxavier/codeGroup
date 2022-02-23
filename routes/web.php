@@ -19,3 +19,4 @@ Route::post('/add',[App\Http\Controllers\ClienteController::class, 'store'])->na
 Route::delete('/delete/{id}',[App\Http\Controllers\ClienteController::class, 'destroy'])->name('deletar');
 Route::get('/edit/{id?}',[App\Http\Controllers\ClienteController::class, 'edit'])->name('edit');
 Route::put('/edit',[App\Http\Controllers\ClienteController::class, 'update'])->name('atualizar');
+Route::get('/busca/{CPF}',[App\Http\Controllers\ClienteController::class, 'buscaClientes']);

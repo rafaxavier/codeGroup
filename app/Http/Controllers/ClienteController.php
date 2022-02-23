@@ -14,6 +14,11 @@ class ClienteController extends Controller
         return view('clientes',['data'=>$data]);
     }
 
+    public function buscaClientes($s){
+        $data = Cliente::where('CPF','like', '%'.$s.'%')->paginate(10);
+        return view('clientes',['data'=>$data]);
+    }
+
     public function create(){
         return view('criarCliente');
     }
@@ -24,7 +29,7 @@ class ClienteController extends Controller
         return view('editarCliente',['cliente'=> $cliente]);
     }
 
-    public function store(Request $request){
+    public function validar($request){
         $request->validate([
             'nome'=> 'required',
             'CPF'=> 'required',
@@ -38,6 +43,11 @@ class ClienteController extends Controller
             'telefone.required'=>'Campo telefone deve ser preenchido',
             'endereco.required'=>'Campo endereco deve ser preenchido'
         ]);
+    }
+
+    public function store(Request $request){
+        $this->validar($request);
+
         $cliente = new Cliente();
         $cliente->fill($request->all());
         $cliente->save();
@@ -46,19 +56,7 @@ class ClienteController extends Controller
     }
 
     public function update(Request $request){
-        $request->validate([
-            'nome'=> 'required',
-            'CPF'=> 'required',
-            'email'=> 'required',
-            'telefone'=> 'required',
-            'endereco'=> 'required',
-        ],[
-            'nome.required'=>'Campo nome deve ser preenchido',
-            'CPF.required'=>'Campo CPF deve ser preenchido',
-            'email.required'=>'Campo email deve ser preenchido',
-            'telefone.required'=>'Campo telefone deve ser preenchido',
-            'endereco.required'=>'Campo endereco deve ser preenchido'
-        ]);
+        $this->validar($request);
 
         $cliente= Cliente::find($request->id);
         $cliente->update($request->all());

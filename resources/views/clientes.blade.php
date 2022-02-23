@@ -14,12 +14,23 @@
 <body>
 
     <div class="container-fluid p-5 ">
-        <nav>
-            <h1>Clientes <a href="{{route('addCliente')}}"><i class="fa fa-user-plus" aria-hidden="true"></i></a> </h1>
-        </nav>
+        <div class="row">
+            <div class="col-lg-10">
+                <h1>Clientes <a href="{{route('addCliente')}}"><i class="fa fa-user-plus" aria-hidden="true"></i></a> </h1>
+            </div>
+            <div class="col-lg-2 mb-3">
+                <div class="input-group  ">
+                    <input type="text" id="input_busca" class="form-control" placeholder="Buscar por CPF">
+                    <div class="input-group-append">
+                      <button class="btn btn-success btn_busca" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             @foreach ($data as $key )
-            <div class="mb-4" style="width: 350px;">
+            <div class="mb-4" style="width: 368px;">
                 <div class="card ">
                     <div class="card-header">
                         <div class="row">
@@ -56,30 +67,36 @@
 
         $(document).ready(function(){
             $('.btn_del').click(function(){
+                var resposta = confirm("Deseja remover esse registro?");
+                if (resposta == true) {
 
                 var id = $(this).val();
                 var url = '{{ url("/") }}'+'/delete/';
 
-                $.ajax({
-                    url: url+id ,
-                    method: 'delete' ,
-                    success: function(){
-                        window.location.href = '/'
-                    }
-                });
+                    $.ajax({
+                        url: url+id ,
+                        method: 'delete' ,
+                        success: function(){
+                            window.location.href = '/'
+                        }
+                    });
+
+                }
 			});
 
             $('.btn_edit').click(function(){
-                // console.log($(this).val());
                 var id = $(this).val();
 				window.location.href = '/edit/'+id;
 			});
 
-                // $('#btn_sair').click(function(){
-				// 	window.location.href = '/sair';
-				// });
-
-
+            $('.btn_busca').click(function(){
+                var s = $('#input_busca').val();
+                if(s !== ''){
+                    window.location.href = '/busca/'+s;
+                }else{
+                    window.location.href = '/';
+                }
+			});
 
 		});
     </script>
